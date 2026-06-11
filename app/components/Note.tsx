@@ -201,8 +201,10 @@ export default function Note({
                 style={
                   isOverflowing
                     ? {
-                        maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
-                        WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                        maskImage:
+                          "linear-gradient(to bottom, black 85%, transparent 100%)",
+                        WebkitMaskImage:
+                          "linear-gradient(to bottom, black 85%, transparent 100%)",
                       }
                     : undefined
                 }
@@ -220,8 +222,10 @@ export default function Note({
                 style={
                   isOverflowing
                     ? {
-                        maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
-                        WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                        maskImage:
+                          "linear-gradient(to bottom, black 85%, transparent 100%)",
+                        WebkitMaskImage:
+                          "linear-gradient(to bottom, black 85%, transparent 100%)",
                       }
                     : undefined
                 }

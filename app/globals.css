@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-canvas-bg: #e8ebf0;
-  --color-canvas-dot: #c8cdd5;
+  --color-canvas-bg: #f8fafc;
+  --canvas-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M29.5 29.5h1v1h-1v-1zm0-4h1v3h-1v-3zm0 5h1v3h-1v-3zm-4-1h3v1h-3v-1zm5 0h3v1h-3v-1z' fill='%2394a3b8' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
 
   --color-note-bg: #ffffff;
   --color-note-border: #d4d8df;
@@ -34,7 +34,6 @@
   --color-dialog-gutter-bg: #f7f8fa;
   --color-dialog-close-hover: #f4f6f9;
 
-
   --color-scrollbar-track: transparent;
   --color-scrollbar-thumb: #d0d5de;
 
@@ -60,8 +59,8 @@
 
 :root.dark,
 :root[data-theme="dark"] {
-  --color-canvas-bg: #141720;
-  --color-canvas-dot: #1e2330;
+  --color-canvas-bg: #0f172a;
+  --canvas-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M29.5 29.5h1v1h-1v-1zm0-4h1v3h-1v-3zm0 5h1v3h-1v-3zm-4-1h3v1h-3v-1zm5 0h3v1h-3v-1z' fill='%23475569' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
 
   --color-note-bg: #1c2133;
   --color-note-border: #283048;
@@ -88,7 +87,6 @@
   --color-dialog-border: #252e44;
   --color-dialog-gutter-bg: #141820;
   --color-dialog-close-hover: #1e2540;
-
 
   --color-scrollbar-thumb: #283048;
 

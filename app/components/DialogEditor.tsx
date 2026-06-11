@@ -32,6 +32,10 @@ const makeTheme = (dark: boolean) =>
   EditorView.theme(
     {
       "&": {
+        flex: "1 1 auto",
+        display: "flex !important",
+        flexDirection: "column !important",
+        justifyContent: "flex-start !important",
         height: "100%",
         background: "transparent",
         color: dark ? "#e2eaf8" : "#1a2332",
@@ -41,14 +45,20 @@ const makeTheme = (dark: boolean) =>
         lineHeight: "1.65",
       },
       ".cm-scroller": {
+        flex: "1 1 auto !important",
+        display: "flex !important",
+        alignItems: "flex-start !important",
+        justifyContent: "flex-start !important",
         overflow: "auto",
-        height: "100%",
+        height: "100% !important",
         padding: "0",
       },
       ".cm-content": {
-        caretColor: dark ? "#7aa0f0" : "#4f7ac7",
-        padding: "4px 24px 16px 8px",
+        display: "block !important",
         minHeight: "100%",
+        margin: "0 !important",
+        caretColor: dark ? "#7aa0f0" : "#4f7ac7",
+        padding: "16px 24px 16px 8px",
         whiteSpace: "pre-wrap",
         wordBreak: "break-word",
         tabSize: "4",
@@ -72,6 +82,10 @@ const makeTheme = (dark: boolean) =>
         background: dark ? "rgba(109,158,235,0.05)" : "rgba(79,122,199,0.04)",
       },
       ".cm-gutters": {
+        display: "flex !important",
+        flexDirection: "column !important",
+        justifyContent: "flex-start !important",
+        height: "100% !important",
         background: dark ? "#141820" : "#f7f8fa",
         border: "none",
         borderRight: dark ? "1px solid #252e44" : "1px solid #d4d8df",
@@ -194,11 +208,15 @@ export default function NoteDialogEditor({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Destroy any existing view first (guard against StrictMode double-mount)
+    // Destroy any existing view before creating a new one
     if (viewRef.current) {
       viewRef.current.destroy();
       viewRef.current = null;
     }
+
+    // Use a closure-scoped abort flag so the async promise can't mount
+    // after cleanup fires (fixes StrictMode double-mount / double-editor bug)
+    let aborted = false;
     destroyedRef.current = false;
 
     const dark = resolvedTheme === "dark";
@@ -245,18 +263,16 @@ export default function NoteDialogEditor({
       return baseExtensions;
     };
 
-    let view: EditorView;
-
     buildExtensions().then((extensions) => {
-      // If already destroyed before async resolved, abort
-      if (destroyedRef.current || !containerRef.current) return;
+      // Bail out if cleanup already ran before the async work finished
+      if (aborted || !containerRef.current) return;
 
       const state = EditorState.create({
         doc: contentRef.current,
         extensions,
       });
 
-      view = new EditorView({
+      const view = new EditorView({
         state,
         parent: containerRef.current,
       });
@@ -272,11 +288,12 @@ export default function NoteDialogEditor({
     });
 
     return () => {
+      aborted = true;
       destroyedRef.current = true;
       if (contentRef.current) {
         persistRef.current(noteId, contentRef.current);
       }
-      view?.destroy();
+      viewRef.current?.destroy();
       viewRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -334,5 +351,10 @@ export default function NoteDialogEditor({
     }
   }, [content]);
 
-  return <div ref={containerRef} className="flex-1 h-full overflow-hidden" />;
+  return (
+    <div
+      ref={containerRef}
+      className="flex-1 h-full overflow-hidden flex flex-col justify-start items-stretch"
+    />
+  );
 }

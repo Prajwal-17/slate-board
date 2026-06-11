@@ -265,14 +265,13 @@ export default function Canvas() {
         onWheel={handleWheel}
         onDoubleClick={handleDoubleClick}
       >
-        {/* Dot grid background */}
+        {/* Crosshair grid background */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage:
-              "radial-gradient(circle, var(--canvas-dot) 1px, transparent 1px)",
-            backgroundPosition: `${viewport.x % (20 * viewport.zoom)}px ${viewport.y % (20 * viewport.zoom)}px`,
-            backgroundSize: `${20 * viewport.zoom}px ${20 * viewport.zoom}px`,
+            backgroundImage: "var(--canvas-pattern)",
+            backgroundPosition: `${viewport.x % (60 * viewport.zoom)}px ${viewport.y % (60 * viewport.zoom)}px`,
+            backgroundSize: `${60 * viewport.zoom}px ${60 * viewport.zoom}px`,
           }}
         />
 

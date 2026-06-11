@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
-import { createPortal } from "react-dom";
-import { X, Trash2, Copy } from "lucide-react";
-import { useStore } from "@/lib/store";
-import type { Note } from "@/lib/types";
-import { formatRelativeTime } from "@/lib/utils";
-import NoteDialogEditor from "./DialogEditor";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useStore } from "@/lib/store";
+import type { Note } from "@/lib/types";
+import { formatRelativeTime } from "@/lib/utils";
+import { Copy, Trash2, X } from "lucide-react";
+import { useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import NoteDialogEditor from "./DialogEditor";
 
 interface NoteEditDialogProps {
   note: Note;
@@ -118,7 +118,6 @@ export default function NoteEditDialog({ note }: NoteEditDialogProps) {
                 aria-label="Close editor"
               >
                 <X size={14} strokeWidth={1.5} />
-                <span>done</span>
               </TooltipTrigger>
               <TooltipContent side="bottom">Close editor (Esc)</TooltipContent>
             </Tooltip>
