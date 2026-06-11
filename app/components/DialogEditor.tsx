@@ -93,6 +93,25 @@ const makeTheme = (dark: boolean) =>
     { dark },
   );
 
+function getVimMode(view: EditorView): string | null {
+  try {
+    const vimState = (view as unknown as Record<string, unknown>).cm;
+    if (vimState && typeof vimState === "object") {
+      const state = vimState as Record<string, unknown>;
+      if (state.state && typeof state.state === "object") {
+        const vim = (state.state as Record<string, unknown>).vim;
+        if (vim && typeof vim === "object") {
+          const mode = (vim as Record<string, unknown>).mode;
+          return typeof mode === "string" ? mode : null;
+        }
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
 export default function NoteDialogEditor({
   noteId,
   content,
@@ -199,6 +218,46 @@ export default function NoteDialogEditor({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [noteId, vimMode, resolvedTheme]);
+
+  // Auto-save every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (contentRef.current) {
+        persistRef.current(noteId, contentRef.current);
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [noteId]);
+
+  // Vim-aware ESC handling: insert → normal → close editor
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+
+      const view = viewRef.current;
+      if (!view || !view.hasFocus) return;
+
+      if (vimMode) {
+        const before = getVimMode(view);
+        // Let vim process the key first (runs at next microtask)
+        queueMicrotask(() => {
+          const after = getVimMode(view);
+          // Mode changed (insert→normal or visual→normal) — don't close
+          if (before !== after) return;
+          // Already in normal mode — close editor
+          window.dispatchEvent(new CustomEvent("close-editor"));
+        });
+        e.stopPropagation();
+      }
+      // Non-vim: let the dialog's ESC handler close normally
+    };
+
+    container.addEventListener("keydown", handleKeyDown, true);
+    return () => container.removeEventListener("keydown", handleKeyDown, true);
+  }, [vimMode]);
 
   // Sync external content changes
   useEffect(() => {

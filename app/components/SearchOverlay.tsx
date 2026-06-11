@@ -75,7 +75,7 @@ export default function SearchOverlay() {
     return (
       <>
         {text.slice(0, idx)}
-        <mark className="bg-accent-light text-accent rounded-sm px-px">
+        <mark className="bg-brand-light text-brand rounded-sm px-px">
           {text.slice(idx, idx + query.length)}
         </mark>
         {text.slice(idx + query.length)}

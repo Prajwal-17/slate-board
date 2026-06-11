@@ -3,6 +3,11 @@
 import { Search, Plus, Sun, Moon, Keyboard } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useTheme } from "./providers/ThemeProvider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Toolbar() {
   const {
@@ -26,61 +31,75 @@ export default function Toolbar() {
         role="toolbar"
         aria-label="Canvas controls"
       >
-        <button
-          className="flex items-center justify-center w-[34px] h-[34px] rounded-md border-none bg-transparent text-text-muted cursor-pointer hover:bg-search-result-hover hover:text-text-primary transition-colors duration-[80ms]"
-          onClick={() => setSearchOpen(true)}
-          title="Search notes (Ctrl+F)"
-          aria-label="Search notes"
-        >
-          <Search size={15} strokeWidth={1.6} />
-        </button>
+        <Tooltip>
+          <TooltipTrigger
+            className="flex items-center justify-center w-[34px] h-[34px] rounded-md border-none bg-transparent text-text-muted cursor-pointer hover:bg-search-result-hover hover:text-text-primary transition-colors duration-[80ms]"
+            onClick={() => setSearchOpen(true)}
+            aria-label="Search notes"
+          >
+            <Search size={15} strokeWidth={1.6} />
+          </TooltipTrigger>
+          <TooltipContent side="top">Search notes <kbd className="ml-1 text-[10px] opacity-60">⌘F</kbd></TooltipContent>
+        </Tooltip>
 
-        <button
-          className="flex items-center justify-center w-[34px] h-[34px] rounded-md border-none bg-transparent text-text-muted cursor-pointer hover:bg-search-result-hover hover:text-text-primary transition-colors duration-[80ms]"
-          onClick={() => addNote("")}
-          title="New note (Ctrl+N)"
-          aria-label="New note"
-        >
-          <Plus size={15} strokeWidth={1.8} />
-        </button>
+        <Tooltip>
+          <TooltipTrigger
+            className="flex items-center justify-center w-[34px] h-[34px] rounded-md border-none bg-transparent text-text-muted cursor-pointer hover:bg-search-result-hover hover:text-text-primary transition-colors duration-[80ms]"
+            onClick={() => addNote("")}
+            aria-label="New note"
+          >
+            <Plus size={15} strokeWidth={1.8} />
+          </TooltipTrigger>
+          <TooltipContent side="top">New note <kbd className="ml-1 text-[10px] opacity-60">⌘N</kbd></TooltipContent>
+        </Tooltip>
 
         <div className="w-px h-5 bg-toolbar-border mx-0.5" />
 
-        <button
-          className="flex items-center justify-center w-[34px] h-[34px] rounded-md border-none bg-transparent text-text-muted cursor-pointer hover:bg-search-result-hover hover:text-text-primary transition-colors duration-[80ms]"
-          onClick={handleThemeToggle}
-          title={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
-          aria-label="Toggle theme"
-        >
-          {resolvedTheme === "dark" ? (
-            <Sun size={15} strokeWidth={1.5} />
-          ) : (
-            <Moon size={15} strokeWidth={1.5} />
-          )}
-        </button>
+        <Tooltip>
+          <TooltipTrigger
+            className="flex items-center justify-center w-[34px] h-[34px] rounded-md border-none bg-transparent text-text-muted cursor-pointer hover:bg-search-result-hover hover:text-text-primary transition-colors duration-[80ms]"
+            onClick={handleThemeToggle}
+            aria-label="Toggle theme"
+          >
+            {resolvedTheme === "dark" ? (
+              <Sun size={15} strokeWidth={1.5} />
+            ) : (
+              <Moon size={15} strokeWidth={1.5} />
+            )}
+          </TooltipTrigger>
+          <TooltipContent side="top">
+            {resolvedTheme === "dark" ? "Light mode" : "Dark mode"}
+          </TooltipContent>
+        </Tooltip>
 
-        <button
-          className={`flex items-center justify-center h-[34px] rounded-md border-none bg-transparent cursor-pointer font-mono text-[10px] font-semibold tracking-[0.08em] px-2 transition-colors duration-[80ms] ${
-            vimMode
-              ? "text-accent bg-accent-light"
-              : "text-text-muted hover:bg-search-result-hover hover:text-text-primary"
-          }`}
-          onClick={toggleVimMode}
-          title={vimMode ? "Vim mode on — click to disable" : "Enable Vim mode"}
-          aria-label="Toggle Vim mode"
-          aria-pressed={vimMode}
-        >
-          VIM
-        </button>
+        <Tooltip>
+          <TooltipTrigger
+            className={`flex items-center justify-center h-[34px] rounded-md border-none bg-transparent cursor-pointer font-mono text-[10px] font-semibold tracking-[0.08em] px-2 transition-colors duration-[80ms] ${
+              vimMode
+                ? "text-brand bg-brand-light"
+                : "text-text-muted hover:bg-search-result-hover hover:text-text-primary"
+            }`}
+            onClick={toggleVimMode}
+            aria-label="Toggle Vim mode"
+            aria-pressed={vimMode}
+          >
+            VIM
+          </TooltipTrigger>
+          <TooltipContent side="top">
+            {vimMode ? "Vim mode on" : "Vim mode off"}
+          </TooltipContent>
+        </Tooltip>
 
-        <button
-          className="flex items-center justify-center w-[34px] h-[34px] rounded-md border-none bg-transparent text-text-muted cursor-pointer hover:bg-search-result-hover hover:text-text-primary transition-colors duration-[80ms]"
-          onClick={() => setShortcutsOpen(true)}
-          title="Keyboard shortcuts"
-          aria-label="Keyboard shortcuts"
-        >
-          <Keyboard size={15} strokeWidth={1.5} />
-        </button>
+        <Tooltip>
+          <TooltipTrigger
+            className="flex items-center justify-center w-[34px] h-[34px] rounded-md border-none bg-transparent text-text-muted cursor-pointer hover:bg-search-result-hover hover:text-text-primary transition-colors duration-[80ms]"
+            onClick={() => setShortcutsOpen(true)}
+            aria-label="Keyboard shortcuts"
+          >
+            <Keyboard size={15} strokeWidth={1.5} />
+          </TooltipTrigger>
+          <TooltipContent side="top">Keyboard shortcuts</TooltipContent>
+        </Tooltip>
       </div>
 
       {shortcutsOpen && (

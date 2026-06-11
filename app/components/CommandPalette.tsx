@@ -140,7 +140,7 @@ export default function CommandPalette() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-2.5 px-4 py-3.5 border-b border-search-border">
-          <span className="font-mono text-sm text-accent font-medium">
+          <span className="font-mono text-sm text-brand font-medium">
             &gt;
           </span>
           <input
@@ -150,7 +150,10 @@ export default function CommandPalette() {
             type="text"
             placeholder="type a command…"
             value={query}
-            onChange={(e) => { setQuery(e.target.value); setActiveIndex(0); }}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setActiveIndex(0);
+            }}
             onKeyDown={handleKeyDown}
             autoComplete="off"
           />
