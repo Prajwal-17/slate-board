@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import type { ThemeMode } from "@/lib/types";
+import { saveSettings } from "@/lib/db";
 
 interface ThemeContextValue {
   theme: ThemeMode;
@@ -40,24 +41,32 @@ export function ThemeProvider({
   });
 
   useEffect(() => {
+    const applyTheme = (resolved: "light" | "dark") => {
+      setResolvedTheme(resolved);
+      const root = document.documentElement;
+      root.classList.toggle("dark", resolved === "dark");
+      root.setAttribute("data-theme", resolved);
+    };
+
     const resolve = () => {
       const resolved = theme === "system" ? getSystemTheme() : theme;
-      setResolvedTheme(resolved);
-      document.documentElement.classList.toggle("dark", resolved === "dark");
+      applyTheme(resolved);
     };
 
     resolve();
 
     if (theme === "system") {
       const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      mq.addEventListener("change", resolve);
-      return () => mq.removeEventListener("change", resolve);
+      const handler = () => applyTheme(getSystemTheme());
+      mq.addEventListener("change", handler);
+      return () => mq.removeEventListener("change", handler);
     }
   }, [theme]);
 
-  const setTheme = (newTheme: ThemeMode) => {
+  const setTheme = useCallback((newTheme: ThemeMode) => {
     setThemeState(newTheme);
-  };
+    saveSettings({ theme: newTheme });
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>

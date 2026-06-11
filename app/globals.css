@@ -64,7 +64,8 @@
   --radius-lg: 10px;
 }
 
-.dark {
+:root.dark,
+:root[data-theme="dark"] {
   --color-canvas-bg: #141720;
   --color-canvas-dot: #1e2330;
 

@@ -256,7 +256,7 @@ export default function Canvas() {
       <div
         ref={canvasRef}
         id="canvas-surface"
-        className="fixed inset-0 overflow-hidden select-none"
+        className="fixed inset-0 overflow-hidden select-none bg-canvas-bg"
         style={{ cursor: isPanning ? "grabbing" : "" }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}

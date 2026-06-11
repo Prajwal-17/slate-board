@@ -47,6 +47,7 @@ export default function NoteEditDialog({ note }: NoteEditDialogProps) {
         role="dialog"
         aria-modal="true"
         aria-label="Edit note"
+        onWheel={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-dialog-border shrink-0">
           <div className="flex items-center gap-2.5">

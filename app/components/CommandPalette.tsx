@@ -23,7 +23,6 @@ export default function CommandPalette() {
     setShortcutsOpen,
   } = useStore();
   const { resolvedTheme, setTheme } = useTheme();
-  const { setTheme: storeSetTheme } = useStore();
 
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -52,9 +51,7 @@ export default function CommandPalette() {
       id: "toggle-theme",
       label: `Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`,
       action: () => {
-        const next = resolvedTheme === "dark" ? "light" : "dark";
-        setTheme(next);
-        storeSetTheme(next);
+        setTheme(resolvedTheme === "dark" ? "light" : "dark");
         setCommandPaletteOpen(false);
       },
     },

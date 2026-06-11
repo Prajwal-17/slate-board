@@ -13,13 +13,10 @@ export default function Toolbar() {
     shortcutsOpen,
     setShortcutsOpen,
   } = useStore();
-  const { theme, resolvedTheme, setTheme } = useTheme();
-  const { setTheme: storeSetTheme } = useStore();
+  const { resolvedTheme, setTheme } = useTheme();
 
   const handleThemeToggle = () => {
-    const next = resolvedTheme === "dark" ? "light" : "dark";
-    setTheme(next);
-    storeSetTheme(next);
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   return (

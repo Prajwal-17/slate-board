@@ -195,15 +195,25 @@ export default function Note({
         )}
 
         <div className="flex-1 px-3.5 pt-3 pb-2 min-h-[60px]">
-          <div className="font-mono text-[13.5px] leading-[1.6] text-text-primary break-words overflow-hidden max-h-[400px] overflow-y-auto whitespace-pre-wrap">
-            {note.content ? (
-              <NotePreview content={note.content} />
-            ) : (
-              <span className="font-mono text-xs text-text-placeholder italic">
-                empty note — double-click to edit
-              </span>
-            )}
-          </div>
+          {isEditing ? (
+            <div className="font-mono text-[13.5px] leading-[1.6] text-text-muted break-words overflow-hidden max-h-[400px] overflow-y-auto whitespace-pre-wrap opacity-60">
+              {note.content || (
+                <span className="font-mono text-xs text-text-placeholder italic">
+                  empty note — double-click to edit
+                </span>
+              )}
+            </div>
+          ) : (
+            <div className="font-mono text-[13.5px] leading-[1.6] text-text-primary break-words overflow-hidden max-h-[400px] overflow-y-auto whitespace-pre-wrap">
+              {note.content ? (
+                <NotePreview content={note.content} />
+              ) : (
+                <span className="font-mono text-xs text-text-placeholder italic">
+                  empty note — double-click to edit
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-between px-3.5 pb-2 gap-2">

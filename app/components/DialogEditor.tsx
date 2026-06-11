@@ -47,7 +47,7 @@ const makeTheme = (dark: boolean) =>
       },
       ".cm-content": {
         caretColor: dark ? "#7aa0f0" : "#4f7ac7",
-        padding: "16px 24px 16px 8px",
+        padding: "4px 24px 16px 8px",
         minHeight: "100%",
         whiteSpace: "pre-wrap",
         wordBreak: "break-word",
