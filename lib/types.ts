@@ -1,10 +1,10 @@
 export type NoteColor =
-  | 'default'
-  | 'amber'
-  | 'green'
-  | 'rose'
-  | 'violet'
-  | 'sky';
+  | "default"
+  | "amber"
+  | "green"
+  | "rose"
+  | "violet"
+  | "sky";
 
 export interface Note {
   id: string;
@@ -19,8 +19,8 @@ export interface Note {
 }
 
 export interface Settings {
-  id: 'settings';
-  theme: 'light' | 'dark' | 'system';
+  id: "settings";
+  theme: "light" | "dark" | "system";
   vimMode: boolean;
   canvasX: number;
   canvasY: number;
@@ -33,4 +33,4 @@ export interface CanvasViewport {
   zoom: number;
 }
 
-export type ThemeMode = 'light' | 'dark' | 'system';
+export type ThemeMode = "light" | "dark" | "system";

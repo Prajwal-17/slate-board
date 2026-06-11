@@ -40,25 +40,10 @@ export default function AppBootstrap() {
 
   if (loading) {
     return (
-      <div className="loading-screen">
-        <span className="loading-wordmark">slate board</span>
-        <style>{`
-          .loading-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--canvas-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          .loading-wordmark {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            font-weight: 300;
-            letter-spacing: 0.12em;
-            color: var(--text-placeholder);
-          }
-        `}</style>
+      <div className="fixed inset-0 flex items-center justify-center bg-canvas-bg">
+        <span className="font-mono text-sm font-light tracking-[0.12em] text-text-placeholder">
+          slate board
+        </span>
       </div>
     );
   }

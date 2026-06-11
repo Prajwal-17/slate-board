@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { create } from 'zustand';
-import type { Note, NoteColor, CanvasViewport } from './types';
+import { create } from "zustand";
+import type { Note, NoteColor, CanvasViewport } from "./types";
 import {
   getAllNotes,
   createNote as dbCreateNote,
   updateNote as dbUpdateNote,
   deleteNote as dbDeleteNote,
   saveSettings,
-} from './db';
-import { createNewNote, screenToCanvas } from './utils';
+} from "./db";
+import { createNewNote, screenToCanvas } from "./utils";
 
 interface UIState {
   selectedNoteId: string | null;
@@ -17,7 +17,7 @@ interface UIState {
   searchOpen: boolean;
   commandPaletteOpen: boolean;
   vimMode: boolean;
-  theme: 'light' | 'dark' | 'system';
+  theme: "light" | "dark" | "system";
   shortcutsOpen: boolean;
 }
 
@@ -31,10 +31,23 @@ interface StoreState extends UIState, CanvasState {
   initialized: boolean;
 
   // Init
-  init: (notes: Note[], settings: { vimMode: boolean; theme: 'light' | 'dark' | 'system'; canvasX: number; canvasY: number; canvasZoom: number }) => void;
+  init: (
+    notes: Note[],
+    settings: {
+      vimMode: boolean;
+      theme: "light" | "dark" | "system";
+      canvasX: number;
+      canvasY: number;
+      canvasZoom: number;
+    },
+  ) => void;
 
   // Notes
-  addNote: (content?: string, screenX?: number, screenY?: number) => Promise<Note>;
+  addNote: (
+    content?: string,
+    screenX?: number,
+    screenY?: number,
+  ) => Promise<Note>;
   updateNoteContent: (id: string, content: string) => void;
   updateNotePosition: (id: string, x: number, y: number) => void;
   deleteNote: (id: string) => Promise<void>;
@@ -56,7 +69,7 @@ interface StoreState extends UIState, CanvasState {
   setCommandPaletteOpen: (open: boolean) => void;
   setShortcutsOpen: (open: boolean) => void;
   toggleVimMode: () => Promise<void>;
-  setTheme: (theme: 'light' | 'dark' | 'system') => Promise<void>;
+  setTheme: (theme: "light" | "dark" | "system") => Promise<void>;
 
   // Persistence helpers (called from debounced hooks)
   persistNoteContent: (id: string, content: string) => Promise<void>;
@@ -72,7 +85,7 @@ export const useStore = create<StoreState>((set, get) => ({
   commandPaletteOpen: false,
   shortcutsOpen: false,
   vimMode: false,
-  theme: 'system',
+  theme: "system",
   viewport: { x: 0, y: 0, zoom: 1 },
   isPanning: false,
 
@@ -90,13 +103,19 @@ export const useStore = create<StoreState>((set, get) => ({
     });
   },
 
-  addNote: async (content = '', screenX?, screenY?) => {
+  addNote: async (content = "", screenX?, screenY?) => {
     const { viewport } = get();
     let canvasX: number;
     let canvasY: number;
 
     if (screenX !== undefined && screenY !== undefined) {
-      const pos = screenToCanvas(screenX, screenY, viewport.x, viewport.y, viewport.zoom);
+      const pos = screenToCanvas(
+        screenX,
+        screenY,
+        viewport.x,
+        viewport.y,
+        viewport.zoom,
+      );
       canvasX = pos.x - 160; // center note on cursor
       canvasY = pos.y - 60;
     } else {
@@ -119,16 +138,14 @@ export const useStore = create<StoreState>((set, get) => ({
   updateNoteContent: (id, content) => {
     set((state) => ({
       notes: state.notes.map((n) =>
-        n.id === id ? { ...n, content, updatedAt: Date.now() } : n
+        n.id === id ? { ...n, content, updatedAt: Date.now() } : n,
       ),
     }));
   },
 
   updateNotePosition: (id, x, y) => {
     set((state) => ({
-      notes: state.notes.map((n) =>
-        n.id === id ? { ...n, x, y } : n
-      ),
+      notes: state.notes.map((n) => (n.id === id ? { ...n, x, y } : n)),
     }));
     // Position persisted on drag end (not every pixel)
     dbUpdateNote(id, { x, y });
@@ -177,7 +194,11 @@ export const useStore = create<StoreState>((set, get) => ({
 
   setViewport: (viewport) => {
     set({ viewport });
-    saveSettings({ canvasX: viewport.x, canvasY: viewport.y, canvasZoom: viewport.zoom });
+    saveSettings({
+      canvasX: viewport.x,
+      canvasY: viewport.y,
+      canvasZoom: viewport.zoom,
+    });
   },
 
   setIsPanning: (isPanning) => set({ isPanning }),

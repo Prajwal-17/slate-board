@@ -1,4 +1,4 @@
-import AppBootstrap from './components/AppBootstrap';
+import AppBootstrap from "./components/AppBootstrap";
 
 export default function Home() {
   return (

@@ -1,220 +1,125 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600&family=Inter:wght@400;500&display=swap');
+@import "tailwindcss";
 
-/* ============================================
-   DESIGN TOKENS
-   ============================================ */
+@theme {
+  --color-canvas-bg: #e8ebf0;
+  --color-canvas-dot: #c8cdd5;
 
-:root {
-  /* Canvas — light mode: bond paper */
-  --canvas-bg: #e8ebf0;
-  --canvas-dot: #c8cdd5;
+  --color-note-bg: #ffffff;
+  --color-note-border: #d4d8df;
 
-  /* Note surfaces */
-  --note-bg: #ffffff;
-  --note-border: #d4d8df;
-  --note-shadow: 0 1px 4px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
-  --note-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
-  --note-shadow-selected: 0 4px 20px rgba(79, 122, 199, 0.2), 0 0 0 2px #4f7ac7;
-  --note-shadow-editing: 0 4px 20px rgba(79, 122, 199, 0.15), 0 0 0 2px #4f7ac7;
+  --color-text-primary: #1a2332;
+  --color-text-secondary: #3d4f63;
+  --color-text-muted: #64748b;
+  --color-text-placeholder: #94a3b8;
 
-  /* Text */
-  --text-primary: #1a2332;
-  --text-secondary: #3d4f63;
-  --text-muted: #64748b;
-  --text-placeholder: #94a3b8;
+  --color-accent: #4f7ac7;
+  --color-accent-light: #e8f0fb;
+  --color-accent-warm: #c97d4a;
 
-  /* Accent — periwinkle blue */
-  --accent: #4f7ac7;
-  --accent-light: #e8f0fb;
-  --accent-warm: #c97d4a;
+  --color-toolbar-bg: #ffffff;
+  --color-toolbar-border: #d4d8df;
 
-  /* UI chrome */
-  --toolbar-bg: #ffffff;
-  --toolbar-border: #d4d8df;
-  --toolbar-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  --color-overlay-bg: rgba(30, 40, 55, 0.5);
+  --color-search-bg: #ffffff;
+  --color-search-border: #d4d8df;
+  --color-search-result-hover: #f4f6f9;
 
-  /* Overlay / Search */
-  --overlay-bg: rgba(30, 40, 55, 0.5);
-  --search-bg: #ffffff;
-  --search-border: #d4d8df;
-  --search-result-hover: #f4f6f9;
+  --color-dialog-backdrop: rgba(20, 30, 45, 0.55);
+  --color-dialog-bg: #ffffff;
+  --color-dialog-border: #d4d8df;
+  --color-dialog-gutter-bg: #f7f8fa;
+  --color-dialog-close-hover: #f4f6f9;
 
-  /* Edit dialog */
-  --dialog-backdrop: rgba(20, 30, 45, 0.55);
-  --dialog-bg: #ffffff;
-  --dialog-border: #d4d8df;
-  --dialog-shadow: 0 24px 80px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.06);
-  --dialog-gutter-bg: #f7f8fa;
-  --dialog-close-hover: #f4f6f9;
+  --color-note-amber-bg: #fffbf0;
+  --color-note-amber-border: #e8d5a0;
+  --color-note-green-bg: #f0faf5;
+  --color-note-green-border: #a8d8b8;
+  --color-note-rose-bg: #fff0f3;
+  --color-note-rose-border: #f0b8c0;
+  --color-note-violet-bg: #f5f0ff;
+  --color-note-violet-border: #c8b0e8;
+  --color-note-sky-bg: #f0f8ff;
+  --color-note-sky-border: #a8d0f0;
 
-  /* Note color variants — light mode */
-  --note-amber-bg: #fffbf0;
-  --note-amber-border: #e8d5a0;
-  --note-green-bg: #f0faf5;
-  --note-green-border: #a8d8b8;
-  --note-rose-bg: #fff0f3;
-  --note-rose-border: #f0b8c0;
-  --note-violet-bg: #f5f0ff;
-  --note-violet-border: #c8b0e8;
-  --note-sky-bg: #f0f8ff;
-  --note-sky-border: #a8d0f0;
+  --color-scrollbar-track: transparent;
+  --color-scrollbar-thumb: #d0d5de;
 
-  /* Scrollbar */
-  --scrollbar-track: transparent;
-  --scrollbar-thumb: #d0d5de;
+  --font-mono:
+    "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
 
-  /* Radius & spacing */
+  --shadow-note: 0 1px 4px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --shadow-note-hover:
+    0 4px 16px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --shadow-note-selected: 0 4px 20px rgba(79, 122, 199, 0.2), 0 0 0 2px #4f7ac7;
+  --shadow-note-editing: 0 4px 20px rgba(79, 122, 199, 0.15), 0 0 0 2px #4f7ac7;
+  --shadow-toolbar: 0 2px 12px rgba(0, 0, 0, 0.1);
+  --shadow-dialog:
+    0 24px 80px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --shadow-search-panel: 0 16px 48px rgba(0, 0, 0, 0.2);
+
   --radius-note: 6px;
   --radius-ui: 6px;
-
-  /* Typography */
-  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-size-xs: 11px;
-  --font-size-sm: 12px;
-  --font-size-base: 13px;
-  --font-size-note: 13.5px;
-  --line-height-note: 1.6;
+  --radius-lg: 10px;
 }
 
-[data-theme='dark'] {
-  /* Canvas — deep graphite, not blue-slate. The board itself. */
-  --canvas-bg: #141720;
-  --canvas-dot: #1e2330;
+.dark {
+  --color-canvas-bg: #141720;
+  --color-canvas-dot: #1e2330;
 
-  /* Note surfaces — lifted off the dark canvas */
-  --note-bg: #1c2133;
-  --note-border: #283048;
-  --note-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
-  --note-shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
-  --note-shadow-selected: 0 4px 24px rgba(100, 155, 240, 0.2), 0 0 0 2px #5b8de0;
-  --note-shadow-editing: 0 4px 24px rgba(100, 155, 240, 0.15), 0 0 0 2px #5b8de0;
+  --color-note-bg: #1c2133;
+  --color-note-border: #283048;
 
-  /* Text — cool white, not warm */
-  --text-primary: #e2eaf8;
-  --text-secondary: #9aaece;
-  --text-muted: #64789a;
-  --text-placeholder: #40526a;
+  --color-text-primary: #e2eaf8;
+  --color-text-secondary: #9aaece;
+  --color-text-muted: #64789a;
+  --color-text-placeholder: #40526a;
 
-  /* Accent — electric indigo */
-  --accent: #7aa0f0;
-  --accent-light: #1a253d;
-  --accent-warm: #f0a070;
+  --color-accent: #7aa0f0;
+  --color-accent-light: #1a253d;
+  --color-accent-warm: #f0a070;
 
-  /* UI chrome — slightly lighter than canvas */
-  --toolbar-bg: #181d2d;
-  --toolbar-border: #252e44;
-  --toolbar-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+  --color-toolbar-bg: #181d2d;
+  --color-toolbar-border: #252e44;
 
-  /* Overlay / Search */
-  --overlay-bg: rgba(5, 8, 18, 0.75);
-  --search-bg: #181d2d;
-  --search-border: #252e44;
-  --search-result-hover: #1e2540;
+  --color-overlay-bg: rgba(5, 8, 18, 0.75);
+  --color-search-bg: #181d2d;
+  --color-search-border: #252e44;
+  --color-search-result-hover: #1e2540;
 
-  /* Edit dialog */
-  --dialog-backdrop: rgba(4, 6, 14, 0.8);
-  --dialog-bg: #181d2d;
-  --dialog-border: #252e44;
-  --dialog-shadow: 0 32px 100px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06);
-  --dialog-gutter-bg: #141820;
-  --dialog-close-hover: #1e2540;
+  --color-dialog-backdrop: rgba(4, 6, 14, 0.8);
+  --color-dialog-bg: #181d2d;
+  --color-dialog-border: #252e44;
+  --color-dialog-gutter-bg: #141820;
+  --color-dialog-close-hover: #1e2540;
 
-  /* Note color variants — dark mode, jewel-toned */
-  --note-amber-bg: #221c0e;
-  --note-amber-border: #3d3015;
-  --note-green-bg: #0e1f17;
-  --note-green-border: #183324;
-  --note-rose-bg: #201218;
-  --note-rose-border: #371c25;
-  --note-violet-bg: #161228;
-  --note-violet-border: #281d4a;
-  --note-sky-bg: #0e1828;
-  --note-sky-border: #162440;
+  --color-note-amber-bg: #221c0e;
+  --color-note-amber-border: #3d3015;
+  --color-note-green-bg: #0e1f17;
+  --color-note-green-border: #183324;
+  --color-note-rose-bg: #201218;
+  --color-note-rose-border: #371c25;
+  --color-note-violet-bg: #161228;
+  --color-note-violet-border: #281d4a;
+  --color-note-sky-bg: #0e1828;
+  --color-note-sky-border: #162440;
 
-  /* Scrollbar */
-  --scrollbar-thumb: #283048;
+  --color-scrollbar-thumb: #283048;
+
+  --shadow-note:
+    0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --shadow-note-hover:
+    0 4px 20px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-note-selected:
+    0 4px 24px rgba(100, 155, 240, 0.2), 0 0 0 2px #5b8de0;
+  --shadow-note-editing:
+    0 4px 24px rgba(100, 155, 240, 0.15), 0 0 0 2px #5b8de0;
+  --shadow-toolbar: 0 2px 20px rgba(0, 0, 0, 0.7);
+  --shadow-dialog:
+    0 32px 100px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-search-panel: 0 16px 48px rgba(0, 0, 0, 0.2);
 }
-
-/* ============================================
-   RESET & BASE
-   ============================================ */
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  height: 100%;
-  overflow: hidden;
-}
-
-body {
-  height: 100%;
-  overflow: hidden;
-  font-family: var(--font-mono);
-  font-size: var(--font-size-base);
-  color: var(--text-primary);
-  background: var(--canvas-bg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: background-color 200ms ease, color 200ms ease;
-}
-
-#__next,
-main {
-  height: 100%;
-  overflow: hidden;
-}
-
-/* ============================================
-   SCROLLBARS
-   ============================================ */
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: 3px;
-}
-
-/* ============================================
-   FOCUS
-   ============================================ */
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
 
 @keyframes note-spawn {
   from {
@@ -228,8 +133,12 @@ main {
 }
 
 @keyframes overlay-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes search-panel-in {
@@ -243,8 +152,21 @@ main {
   }
 }
 
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }

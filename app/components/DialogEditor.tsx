@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { EditorState, Extension } from '@codemirror/state';
+import { useEffect, useRef } from "react";
+import { EditorState, Extension } from "@codemirror/state";
 import {
   EditorView,
   keymap,
@@ -9,13 +9,18 @@ import {
   highlightActiveLine,
   lineNumbers,
   highlightActiveLineGutter,
-} from '@codemirror/view';
-import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
-import { searchKeymap } from '@codemirror/search';
-import { indentOnInput } from '@codemirror/language';
-import { useStore } from '@/lib/store';
-import { useTheme } from './providers/ThemeProvider';
+} from "@codemirror/view";
+import {
+  defaultKeymap,
+  history,
+  historyKeymap,
+  indentWithTab,
+} from "@codemirror/commands";
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
+import { searchKeymap } from "@codemirror/search";
+import { indentOnInput } from "@codemirror/language";
+import { useStore } from "@/lib/store";
+import { useTheme } from "./providers/ThemeProvider";
 
 interface DialogEditorProps {
   noteId: string;
@@ -26,58 +31,66 @@ interface DialogEditorProps {
 const makeTheme = (dark: boolean) =>
   EditorView.theme(
     {
-      '&': {
-        height: '100%',
-        background: 'transparent',
-        color: 'var(--text-primary)',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '14px',
-        lineHeight: '1.65',
+      "&": {
+        height: "100%",
+        background: "transparent",
+        color: dark ? "#e2eaf8" : "#1a2332",
+        fontFamily:
+          "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+        fontSize: "14px",
+        lineHeight: "1.65",
       },
-      '.cm-scroller': {
-        overflow: 'auto',
-        height: '100%',
-        padding: '0',
+      ".cm-scroller": {
+        overflow: "auto",
+        height: "100%",
+        padding: "0",
       },
-      '.cm-content': {
-        caretColor: 'var(--accent)',
-        padding: '16px 24px 16px 8px',
-        minHeight: '100%',
-        whiteSpace: 'pre-wrap',
-        wordBreak: 'break-word',
-        tabSize: '4',
+      ".cm-content": {
+        caretColor: dark ? "#7aa0f0" : "#4f7ac7",
+        padding: "16px 24px 16px 8px",
+        minHeight: "100%",
+        whiteSpace: "pre-wrap",
+        wordBreak: "break-word",
+        tabSize: "4",
       },
-      '.cm-cursor': { borderLeftColor: 'var(--accent)', borderLeftWidth: '2px' },
-      '.cm-selectionBackground, ::selection': {
-        background: dark ? 'rgba(109,158,235,0.25) !important' : 'var(--accent-light) !important',
+      ".cm-cursor": {
+        borderLeftColor: dark ? "#7aa0f0" : "#4f7ac7",
+        borderLeftWidth: "2px",
       },
-      '.cm-focused .cm-selectionBackground': {
-        background: dark ? 'rgba(109,158,235,0.25) !important' : 'var(--accent-light) !important',
+      ".cm-selectionBackground, ::selection": {
+        background: dark
+          ? "rgba(109,158,235,0.25) !important"
+          : "#e8f0fb !important",
       },
-      '.cm-line': { padding: '0 0 0 4px' },
-      '.cm-activeLine': {
-        background: dark ? 'rgba(109,158,235,0.05)' : 'rgba(79,122,199,0.04)',
+      ".cm-focused .cm-selectionBackground": {
+        background: dark
+          ? "rgba(109,158,235,0.25) !important"
+          : "#e8f0fb !important",
       },
-      '.cm-gutters': {
-        background: 'var(--dialog-gutter-bg)',
-        border: 'none',
-        borderRight: '1px solid var(--dialog-border)',
-        color: 'var(--text-placeholder)',
-        minWidth: '48px',
-        userSelect: 'none',
+      ".cm-line": { padding: "0 0 0 4px" },
+      ".cm-activeLine": {
+        background: dark ? "rgba(109,158,235,0.05)" : "rgba(79,122,199,0.04)",
       },
-      '.cm-gutterElement': {
-        padding: '0 12px 0 8px',
-        textAlign: 'right',
-        lineHeight: '1.65',
+      ".cm-gutters": {
+        background: dark ? "#141820" : "#f7f8fa",
+        border: "none",
+        borderRight: dark ? "1px solid #252e44" : "1px solid #d4d8df",
+        color: dark ? "#40526a" : "#94a3b8",
+        minWidth: "48px",
+        userSelect: "none",
       },
-      '.cm-activeLineGutter': {
-        background: dark ? 'rgba(109,158,235,0.08)' : 'rgba(79,122,199,0.06)',
-        color: 'var(--accent)',
+      ".cm-gutterElement": {
+        padding: "0 12px 0 8px",
+        textAlign: "right",
+        lineHeight: "1.65",
       },
-      '&.cm-focused': { outline: 'none' },
+      ".cm-activeLineGutter": {
+        background: dark ? "rgba(109,158,235,0.08)" : "rgba(79,122,199,0.06)",
+        color: dark ? "#7aa0f0" : "#4f7ac7",
+      },
+      "&.cm-focused": { outline: "none" },
     },
-    { dark }
+    { dark },
   );
 
 export default function NoteDialogEditor({
@@ -106,7 +119,7 @@ export default function NoteDialogEditor({
     }
     destroyedRef.current = false;
 
-    const dark = resolvedTheme === 'dark';
+    const dark = resolvedTheme === "dark";
 
     const buildExtensions = async (): Promise<Extension[]> => {
       const baseExtensions: Extension[] = [
@@ -140,7 +153,7 @@ export default function NoteDialogEditor({
 
       if (vimMode) {
         try {
-          const { vim } = await import('@replit/codemirror-vim');
+          const { vim } = await import("@replit/codemirror-vim");
           baseExtensions.push(vim());
         } catch {
           // vim extension failed to load — continue without it
@@ -199,11 +212,5 @@ export default function NoteDialogEditor({
     }
   }, [content]);
 
-  return (
-    <div
-      ref={containerRef}
-      className="dialog-cm-container"
-      style={{ flex: 1, height: '100%', overflow: 'hidden' }}
-    />
-  );
+  return <div ref={containerRef} className="flex-1 h-full overflow-hidden" />;
 }

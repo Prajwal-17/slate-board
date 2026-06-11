@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 
 interface NotePreviewProps {
   content: string;
@@ -10,119 +10,36 @@ interface NotePreviewProps {
 
 export default function NotePreview({ content }: NotePreviewProps) {
   return (
-    <div className="note-markdown">
+    <div className="font-mono text-[13.5px] leading-[1.6] text-text-primary break-words [&_h1]:text-base [&_h1]:font-semibold [&_h1]:mb-2 [&_h1]:text-text-primary [&_h2]:text-sm [&_h2]:font-semibold [&_h2]:my-2 [&_h2]:text-text-primary [&_h3]:text-[13px] [&_h3]:font-medium [&_h3]:my-1.5 [&_h3]:text-text-secondary [&_p]:mb-1.5 [&_p:last-child]:mb-0 [&_ul]:pl-4 [&_ul]:mb-1.5 [&_ol]:pl-4 [&_ol]:mb-1.5 [&_li]:my-0.5 [&_li_input[type=checkbox]]:mr-1.5 [&_li_input[type=checkbox]]:accent-accent [&_strong]:font-semibold [&_em]:italic [&_del]:opacity-50 [&_a]:text-accent [&_a]:no-underline hover:[&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:my-1.5 [&_blockquote]:py-0.5 [&_blockquote]:pl-2.5 [&_blockquote]:text-text-muted [&_blockquote]:italic [&_hr]:border-none [&_hr]:border-t [&_hr]:border-note-border [&_hr]:my-2 [&_table]:border-collapse [&_table]:text-xs [&_table]:w-full [&_table]:my-1.5 [&_th]:border [&_th]:border-note-border [&_th]:p-1 [&_th]:text-left [&_th]:font-semibold [&_th]:bg-accent-light [&_td]:border [&_td]:border-note-border [&_td]:p-1 [&_td]:text-left [&_pre]:bg-canvas-bg [&_pre]:border [&_pre]:border-note-border [&_pre]:rounded [&_pre]:p-2 [&_pre]:overflow-x-auto [&_pre]:my-1.5 [&_pre]:text-xs [&_.hljs-keyword]:text-accent [&_.hljs-built_in]:text-accent [&_.hljs-string]:text-accent-warm [&_.hljs-comment]:text-text-muted [&_.hljs-comment]:italic [&_.hljs-number]:text-[#7ec8a0]">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight]}
         components={{
-          // Open links in new tab
           a: ({ ...props }) => (
             <a {...props} target="_blank" rel="noopener noreferrer" />
           ),
-          // Inline code
           code: ({ className, children, ...props }) => {
-            const isBlock = className?.includes('language-');
+            const isBlock = className?.includes("language-");
             if (isBlock) {
-              return <code className={className} {...props}>{children}</code>;
+              return (
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              );
             }
-            return <code className="inline-code" {...props}>{children}</code>;
+            return (
+              <code
+                className="bg-canvas-bg border border-note-border rounded px-1 py-px text-[0.9em]"
+                {...props}
+              >
+                {children}
+              </code>
+            );
           },
         }}
       >
         {content}
       </ReactMarkdown>
-      <style>{`
-        .note-markdown {
-          font-family: var(--font-mono);
-          font-size: var(--font-size-note);
-          line-height: var(--line-height-note);
-          color: var(--text-primary);
-          word-break: break-word;
-        }
-        .note-markdown h1 {
-          font-size: 16px;
-          font-weight: 600;
-          margin: 0 0 8px;
-          color: var(--text-primary);
-        }
-        .note-markdown h2 {
-          font-size: 14px;
-          font-weight: 600;
-          margin: 8px 0 6px;
-          color: var(--text-primary);
-        }
-        .note-markdown h3 {
-          font-size: 13px;
-          font-weight: 500;
-          margin: 6px 0 4px;
-          color: var(--text-secondary);
-        }
-        .note-markdown p { margin: 0 0 6px; }
-        .note-markdown p:last-child { margin-bottom: 0; }
-        .note-markdown ul, .note-markdown ol {
-          padding-left: 16px;
-          margin: 0 0 6px;
-        }
-        .note-markdown li { margin: 2px 0; }
-        .note-markdown li input[type="checkbox"] {
-          margin-right: 6px;
-          accent-color: var(--accent);
-        }
-        .note-markdown strong { font-weight: 600; }
-        .note-markdown em { font-style: italic; }
-        .note-markdown del { opacity: 0.5; }
-        .note-markdown a {
-          color: var(--accent);
-          text-decoration: none;
-        }
-        .note-markdown a:hover { text-decoration: underline; }
-        .note-markdown blockquote {
-          border-left: 2px solid var(--accent);
-          margin: 6px 0;
-          padding: 2px 10px;
-          color: var(--text-muted);
-          font-style: italic;
-        }
-        .note-markdown hr {
-          border: none;
-          border-top: 1px solid var(--note-border);
-          margin: 8px 0;
-        }
-        .note-markdown table {
-          border-collapse: collapse;
-          font-size: var(--font-size-sm);
-          width: 100%;
-          margin: 6px 0;
-        }
-        .note-markdown th, .note-markdown td {
-          border: 1px solid var(--note-border);
-          padding: 4px 8px;
-          text-align: left;
-        }
-        .note-markdown th { font-weight: 600; background: var(--accent-light); }
-        .note-markdown pre {
-          background: var(--canvas-bg);
-          border: 1px solid var(--note-border);
-          border-radius: 4px;
-          padding: 8px 10px;
-          overflow-x: auto;
-          margin: 6px 0;
-          font-size: var(--font-size-sm);
-        }
-        .note-markdown .inline-code {
-          background: var(--canvas-bg);
-          border: 1px solid var(--note-border);
-          border-radius: 3px;
-          padding: 1px 5px;
-          font-size: 0.9em;
-        }
-        /* Highlight.js minimal overrides for both themes */
-        .note-markdown .hljs-keyword,
-        .note-markdown .hljs-built_in { color: var(--accent); }
-        .note-markdown .hljs-string { color: var(--accent-warm); }
-        .note-markdown .hljs-comment { color: var(--text-muted); font-style: italic; }
-        .note-markdown .hljs-number { color: #7ec8a0; }
-      `}</style>
     </div>
   );
 }

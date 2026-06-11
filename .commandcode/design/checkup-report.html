@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slate Board - Checkup Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      }
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      .report-section {
+        border: 1px solid #222226;
+        background: #0a0a0b;
+        position: relative;
+      }
+      .corner-box {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #222226;
+        background: #000;
+      }
+    </style>
+  </head>
+  <body class="bg-black text-[#fafafa]">
+    <main class="mx-auto w-full max-w-6xl px-5 py-8 md:px-10 md:py-12">
+      <header class="report-section mb-8 p-6 md:p-8">
+        <div
+          class="corner-box left-0 top-0 -translate-x-1/2 -translate-y-1/2"
+        ></div>
+        <div
+          class="corner-box right-0 top-0 translate-x-1/2 -translate-y-1/2"
+        ></div>
+        <div
+          class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
+        >
+          <div>
+            <div class="mono mb-2 text-xs tracking-widest text-[#666]">
+              // CHECKUP
+            </div>
+            <h1 class="text-4xl font-bold tracking-tight md:text-6xl">
+              Slate Board
+            </h1>
+          </div>
+          <div class="mono text-left text-xs text-[#666] md:text-right">
+            <div>COMMANDCODE REPORT</div>
+            <div class="text-[#444]">2026-06-11</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="report-section mb-8 p-6 md:p-8">
+        <div
+          class="corner-box left-0 top-0 -translate-x-1/2 -translate-y-1/2"
+        ></div>
+        <div
+          class="corner-box right-0 top-0 translate-x-1/2 -translate-y-1/2"
+        ></div>
+        <div class="grid gap-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+          <div>
+            <div class="mono mb-2 text-xs tracking-widest text-[#666]">
+              // OVERALL
+            </div>
+            <div class="text-6xl font-bold tracking-tight md:text-7xl">30</div>
+            <div class="mt-1 text-lg text-[#666]">/ 60</div>
+            <div
+              class="mt-4 inline-flex border border-[#fbbf24]/30 bg-[#fbbf24]/10 px-3 py-1 text-sm text-[#fbbf24]"
+            >
+              WATCH
+            </div>
+          </div>
+          <div>
+            <div class="mono mb-3 text-xs tracking-widest text-[#666]">
+              // TL;DR
+            </div>
+            <p class="text-sm leading-6 text-[#a0a0a0]">
+              Strong intentional design system with deliberate monospace
+              aesthetic and dual-theme tokens. Core paste-move-edit loop works
+              cleanly and performs well. Three real gaps: no undo for
+              destructive actions, touch targets below WCAG minimums, and
+              placeholder/muted text contrast failures in both themes. All
+              fixable without architectural changes.
+            </p>
+            <p class="mt-4 text-sm leading-6 text-[#fbbf24]">
+              Start with undo for delete (store-level change), then touch
+              targets and contrast fixes. Estimated 3 targeted fixes, zero
+              architecture changes.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="report-section mb-8 p-6 md:p-8">
+        <div class="mono mb-6 text-xs tracking-widest text-[#666]">
+          // HEURISTIC SCORES
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[720px] border-collapse text-sm">
+            <thead>
+              <tr
+                class="border-b border-[#222226] text-left mono text-xs text-[#666]"
+              >
+                <th class="py-3 pr-4 font-normal">#</th>
+                <th class="py-3 pr-4 font-normal">VITAL SIGN</th>
+                <th class="py-3 pr-4 font-normal">SCORE</th>
+                <th class="py-3 font-normal">KEY FINDING</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-[#1a1a1e]">
+                <td class="py-4 pr-4 text-[#555]">1</td>
+                <td class="py-4 pr-4 text-[#fafafa]">Intentionality</td>
+                <td class="py-4 pr-4 text-[#34d399]">10/10</td>
+                <td class="py-4 text-[#a0a0a0]">
+                  Custom token system, deliberate monospace aesthetic,
+                  dual-theme, non-default palette
+                </td>
+              </tr>
+              <tr class="border-b border-[#1a1a1e]">
+                <td class="py-4 pr-4 text-[#555]">2</td>
+                <td class="py-4 pr-4 text-[#fafafa]">Readability</td>
+                <td class="py-4 pr-4 text-[#fbbf24]">5/10</td>
+                <td class="py-4 text-[#a0a0a0]">
+                  Placeholder text fails WCAG AA contrast in both themes; muted
+                  text marginal in light mode
+                </td>
+              </tr>
+              <tr class="border-b border-[#1a1a1e]">
+                <td class="py-4 pr-4 text-[#555]">3</td>
+                <td class="py-4 pr-4 text-[#fafafa]">Usability</td>
+                <td class="py-4 pr-4 text-[#fbbf24]">5/10</td>
+                <td class="py-4 text-[#a0a0a0]">
+                  Core flow works well; no undo for delete/move — destructive
+                  actions are permanent
+                </td>
+              </tr>
+              <tr class="border-b border-[#1a1a1e]">
+                <td class="py-4 pr-4 text-[#555]">4</td>
+                <td class="py-4 pr-4 text-[#fafafa]">Responsiveness</td>
+                <td class="py-4 pr-4 text-[#fbbf24]">5/10</td>
+                <td class="py-4 text-[#a0a0a0]">
+                  Overlays/dialogs adapt; fixed 320px notes don't; no safe-area
+                  handling
+                </td>
+              </tr>
+              <tr class="border-b border-[#1a1a1e]">
+                <td class="py-4 pr-4 text-[#555]">5</td>
+                <td class="py-4 pr-4 text-[#fafafa]">Speed</td>
+                <td class="py-4 pr-4 text-[#34d399]">10/10</td>
+                <td class="py-4 text-[#a0a0a0]">
+                  Client-side only, IndexedDB, debounced persistence,
+                  GPU-friendly animations
+                </td>
+              </tr>
+              <tr class="border-b border-[#1a1a1e]">
+                <td class="py-4 pr-4 text-[#555]">6</td>
+                <td class="py-4 pr-4 text-[#fafafa]">Accessibility</td>
+                <td class="py-4 pr-4 text-[#fbbf24]">5/10</td>
+                <td class="py-4 text-[#a0a0a0]">
+                  Good ARIA foundation; touch targets too small; no focus trap;
+                  no live regions
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="report-section mb-8 p-6 md:p-8">
+        <div class="mono mb-6 text-xs tracking-widest text-[#666]">
+          // COGNITIVE LOAD / RISK
+        </div>
+        <div class="grid gap-6 md:grid-cols-2">
+          <div>
+            <div class="mb-3 text-xl font-semibold">Moderate Risk</div>
+            <ul class="space-y-3 text-sm text-[#a0a0a0]">
+              <li>
+                <span class="mono mr-2 text-[#34d399]">PASS</span>Design tokens
+                are authored, not inherited from framework defaults
+              </li>
+              <li>
+                <span class="mono mr-2 text-[#34d399]">PASS</span>Core
+                interaction loop (paste → move → edit) is fluid and intuitive
+              </li>
+              <li>
+                <span class="mono mr-2 text-[#34d399]">PASS</span>Performance
+                fundamentals are sound — no layout thrash, GPU animations only
+              </li>
+              <li>
+                <span class="mono mr-2 text-[#fbbf24]">WATCH</span>No undo
+                mechanism — a single keystroke destroys data permanently
+              </li>
+              <li>
+                <span class="mono mr-2 text-[#fbbf24]">WATCH</span>Touch targets
+                at 20-34px violate WCAG guidelines on mobile
+              </li>
+              <li>
+                <span class="mono mr-2 text-[#ef4444]">FAIL</span>Placeholder
+                text contrast fails WCAG AA in both light and dark themes
+              </li>
+              <li>
+                <span class="mono mr-2 text-[#ef4444]">FAIL</span>No focus
+                trapping in modals — keyboard users escape into hidden canvas
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="mono mb-3 text-xs tracking-widest text-[#666]">
+              // NEXT MODES
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="border border-[#333] px-3 py-1 text-sm text-[#a0a0a0]"
+                >/design interaction</span
+              >
+              <span
+                class="border border-[#333] px-3 py-1 text-sm text-[#a0a0a0]"
+                >/design recolor</span
+              >
+              <span
+                class="border border-[#333] px-3 py-1 text-sm text-[#a0a0a0]"
+                >/design responsive</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="report-section mb-8 p-6 md:p-8">
+        <div class="mono mb-6 text-xs tracking-widest text-[#666]">
+          // WHAT'S WORKING
+        </div>
+        <div class="grid gap-4 md:grid-cols-3">
+          <article class="border border-[#1f1f24] p-4">
+            <h2 class="mb-2 text-sm font-semibold">Design Token System</h2>
+            <p class="text-sm leading-6 text-[#a0a0a0]">
+              50+ CSS custom properties organized by surface role (canvas, note,
+              toolbar, overlay, dialog). Dual-theme with dark readings that feel
+              authored — deep graphite canvas with cool-white text, not a simple
+              invert.
+            </p>
+          </article>
+          <article class="border border-[#1f1f24] p-4">
+            <h2 class="mb-2 text-sm font-semibold">Interaction Loop</h2>
+            <p class="text-sm leading-6 text-[#a0a0a0]">
+              Paste creates notes at cursor position. Drag repositions in canvas
+              space. Double-click opens CodeMirror editor. Debounced auto-save
+              to IndexedDB. The product's core promise is delivered cleanly.
+            </p>
+          </article>
+          <article class="border border-[#1f1f24] p-4">
+            <h2 class="mb-2 text-sm font-semibold">Performance Discipline</h2>
+            <p class="text-sm leading-6 text-[#a0a0a0]">
+              Transform/opacity-only animations, lazy-loaded vim extension, CSS
+              background-image dot grid, debounced DB writes. Zero layout
+              thrash. Fast time-to-interactive.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="report-section mb-8 p-6 md:p-8">
+        <div class="mono mb-6 text-xs tracking-widest text-[#666]">
+          // PRIORITY ISSUES
+        </div>
+        <div class="space-y-5">
+          <article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+            <div class="mono mb-2 text-xs text-[#f43f5e]">P0</div>
+            <h2 class="mb-2 text-lg font-semibold">
+              No undo for destructive actions
+            </h2>
+            <p class="mb-4 text-sm leading-6 text-[#a0a0a0]">
+              Delete is permanent with zero confirmation. A single Backspace
+              keypress removes a note from state and IndexedDB instantly. No
+              undo buffer, no trash, no toast. The design principle says "Undo
+              beats confirm" — especially for delete, move, and edit operations.
+            </p>
+            <div
+              class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]"
+            >
+              FIX: Add undo stack to Zustand store (snapshot before destructive
+              ops) or a 5-second toast with "Undo" button. Direct store refactor
+              — no new dependencies needed.
+            </div>
+          </article>
+
+          <article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+            <div class="mono mb-2 text-xs text-[#f43f5e]">P1</div>
+            <h2 class="mb-2 text-lg font-semibold">
+              Touch targets below minimum
+            </h2>
+            <p class="mb-4 text-sm leading-6 text-[#a0a0a0]">
+              Toolbar buttons are 34×34px (WCAG recommends 44×44px). Context
+              menu color swatches are 20×20px — nearly impossible to tap
+              accurately on a phone. Mobile use is obstructed by tiny hit areas
+              even though the product conceptually works on touch devices.
+            </p>
+            <div
+              class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]"
+            >
+              FIX: Expand toolbar button containers to 44×44px minimum. Increase
+              swatch size to 28px with adequate spacing. Use padded containers
+              rather than visually enlarging icons.
+            </div>
+          </article>
+
+          <article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+            <div class="mono mb-2 text-xs text-[#f43f5e]">P1</div>
+            <h2 class="mb-2 text-lg font-semibold">
+              Contrast failure on placeholder and muted text
+            </h2>
+            <p class="mb-4 text-sm leading-6 text-[#a0a0a0]">
+              Light mode: placeholder (#94a3b8 on white) ≈ 3.0:1 — fails WCAG AA
+              for any text size. Muted (#64748b on white) ≈ 4.5:1 — marginal for
+              normal text, fails for small text below 14px. Dark mode:
+              placeholder (#40526a on #141720) ≈ 3.2:1 — fails AA.
+            </p>
+            <div
+              class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]"
+            >
+              FIX: Darken light-mode placeholder to #6b7280, muted to #4b5563.
+              Lighten dark-mode placeholder to #5a7090. Direct token edits in
+              globals.css — two-location change.
+            </div>
+          </article>
+
+          <article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+            <div class="mono mb-2 text-xs text-[#fbbf24]">P2</div>
+            <h2 class="mb-2 text-lg font-semibold">
+              No focus trap in modal dialogs
+            </h2>
+            <p class="mb-4 text-sm leading-6 text-[#a0a0a0]">
+              Search overlay, command palette, and edit dialog are marked
+              aria-modal="true" but don't constrain Tab focus. A keyboard user
+              tabbing past the last focusable element leaves the overlay and
+              lands on hidden canvas UI behind it. Focus is lost, not trapped.
+            </p>
+            <div
+              class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]"
+            >
+              FIX: Add a focus-trap hook or wrapper. Standard pattern: Tab from
+              last element cycles to first, Shift+Tab from first cycles to last.
+              ~30 lines of code.
+            </div>
+          </article>
+
+          <article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+            <div class="mono mb-2 text-xs text-[#fbbf24]">P2</div>
+            <h2 class="mb-2 text-lg font-semibold">
+              No screen reader feedback on state changes
+            </h2>
+            <p class="mb-4 text-sm leading-6 text-[#a0a0a0]">
+              When notes are created, deleted, duplicated, or pinned, there is
+              no aria-live announcement. Screen reader users receive no
+              confirmation that their action was successful. The visually-hidden
+              assistive text channel is missing entirely.
+            </p>
+            <div
+              class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]"
+            >
+              FIX: Add an aria-live="polite" region to the canvas (visually
+              hidden) and push status messages on create, delete, duplicate, and
+              pin state changes.
+            </div>
+          </article>
+
+          <article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+            <div class="mono mb-2 text-xs text-[#fbbf24]">P2</div>
+            <h2 class="mb-2 text-lg font-semibold">
+              Notes don't adapt to narrow viewports
+            </h2>
+            <p class="mb-4 text-sm leading-6 text-[#a0a0a0]">
+              Notes have a fixed 320px width. On a 320px-wide iPhone SE
+              viewport, a note fills the entire screen horizontally with no
+              breathing room. While the canvas is pannable, notes don't scale or
+              constrain to available width.
+            </p>
+            <div
+              class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]"
+            >
+              FIX: Clamp note width to min(320px, calc(100vw - 32px)). Deeper
+              pass: container queries for note content reflow on small
+              containers.
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <footer class="mono py-8 text-center text-xs tracking-widest text-[#444]">
+        Generated with CommandCode - 2026-06-11
+      </footer>
+    </main>
+  </body>
+</html>

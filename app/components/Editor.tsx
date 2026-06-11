@@ -1,13 +1,18 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { EditorState, Extension } from '@codemirror/state';
-import { EditorView, keymap, drawSelection, highlightActiveLine } from '@codemirror/view';
-import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
-import { searchKeymap } from '@codemirror/search';
-import { useStore } from '@/lib/store';
-import { useTheme } from './providers/ThemeProvider';
+import { useEffect, useRef } from "react";
+import { EditorState, Extension } from "@codemirror/state";
+import {
+  EditorView,
+  keymap,
+  drawSelection,
+  highlightActiveLine,
+} from "@codemirror/view";
+import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
+import { searchKeymap } from "@codemirror/search";
+import { useStore } from "@/lib/store";
+import { useTheme } from "./providers/ThemeProvider";
 
 interface EditorProps {
   noteId: string;
@@ -15,45 +20,61 @@ interface EditorProps {
   autoFocus?: boolean;
 }
 
-// Light theme
-const lightTheme = EditorView.theme({
-  '&': {
-    background: 'transparent',
-    color: 'var(--text-primary)',
-    fontFamily: 'var(--font-mono)',
-    fontSize: 'var(--font-size-note)',
-    lineHeight: 'var(--line-height-note)',
+const lightTheme = EditorView.theme(
+  {
+    "&": {
+      background: "transparent",
+      color: "#1a2332",
+      fontFamily:
+        "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+      fontSize: "13.5px",
+      lineHeight: "1.6",
+    },
+    ".cm-content": { caretColor: "#4f7ac7", padding: "0" },
+    ".cm-cursor": { borderLeftColor: "#4f7ac7", borderLeftWidth: "2px" },
+    ".cm-selectionBackground, ::selection": {
+      background: "#e8f0fb !important",
+    },
+    ".cm-focused .cm-selectionBackground": { background: "#e8f0fb !important" },
+    ".cm-line": { padding: "0" },
+    ".cm-activeLine": { background: "rgba(79,122,199,0.06)" },
+    "&.cm-focused": { outline: "none" },
+    ".cm-scroller": { overflow: "auto", maxHeight: "400px" },
   },
-  '.cm-content': { caretColor: 'var(--accent)', padding: '0' },
-  '.cm-cursor': { borderLeftColor: 'var(--accent)', borderLeftWidth: '2px' },
-  '.cm-selectionBackground, ::selection': { background: 'var(--accent-light) !important' },
-  '.cm-focused .cm-selectionBackground': { background: 'var(--accent-light) !important' },
-  '.cm-line': { padding: '0' },
-  '.cm-activeLine': { background: 'rgba(79,122,199,0.06)' },
-  '&.cm-focused': { outline: 'none' },
-  '.cm-scroller': { overflow: 'auto', maxHeight: '400px' },
-}, { dark: false });
+  { dark: false },
+);
 
-// Dark theme
-const darkTheme = EditorView.theme({
-  '&': {
-    background: 'transparent',
-    color: 'var(--text-primary)',
-    fontFamily: 'var(--font-mono)',
-    fontSize: 'var(--font-size-note)',
-    lineHeight: 'var(--line-height-note)',
+const darkTheme = EditorView.theme(
+  {
+    "&": {
+      background: "transparent",
+      color: "#e2eaf8",
+      fontFamily:
+        "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+      fontSize: "13.5px",
+      lineHeight: "1.6",
+    },
+    ".cm-content": { caretColor: "#7aa0f0", padding: "0" },
+    ".cm-cursor": { borderLeftColor: "#7aa0f0", borderLeftWidth: "2px" },
+    ".cm-selectionBackground, ::selection": {
+      background: "rgba(109,158,235,0.25) !important",
+    },
+    ".cm-focused .cm-selectionBackground": {
+      background: "rgba(109,158,235,0.25) !important",
+    },
+    ".cm-line": { padding: "0" },
+    ".cm-activeLine": { background: "rgba(109,158,235,0.08)" },
+    "&.cm-focused": { outline: "none" },
+    ".cm-scroller": { overflow: "auto", maxHeight: "400px" },
   },
-  '.cm-content': { caretColor: 'var(--accent)', padding: '0' },
-  '.cm-cursor': { borderLeftColor: 'var(--accent)', borderLeftWidth: '2px' },
-  '.cm-selectionBackground, ::selection': { background: 'rgba(109,158,235,0.25) !important' },
-  '.cm-focused .cm-selectionBackground': { background: 'rgba(109,158,235,0.25) !important' },
-  '.cm-line': { padding: '0' },
-  '.cm-activeLine': { background: 'rgba(109,158,235,0.08)' },
-  '&.cm-focused': { outline: 'none' },
-  '.cm-scroller': { overflow: 'auto', maxHeight: '400px' },
-}, { dark: true });
+  { dark: true },
+);
 
-export default function NoteEditor({ noteId, content, autoFocus = false }: EditorProps) {
+export default function NoteEditor({
+  noteId,
+  content,
+  autoFocus = false,
+}: EditorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const { updateNoteContent, persistNoteContent, vimMode } = useStore();
@@ -71,13 +92,9 @@ export default function NoteEditor({ noteId, content, autoFocus = false }: Edito
         history(),
         drawSelection(),
         highlightActiveLine(),
-        resolvedTheme === 'dark' ? darkTheme : lightTheme,
+        resolvedTheme === "dark" ? darkTheme : lightTheme,
         markdown({ base: markdownLanguage }),
-        keymap.of([
-          ...defaultKeymap,
-          ...historyKeymap,
-          ...searchKeymap,
-        ]),
+        keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
@@ -95,7 +112,7 @@ export default function NoteEditor({ noteId, content, autoFocus = false }: Edito
 
       if (vimMode) {
         try {
-          const { vim } = await import('@replit/codemirror-vim');
+          const { vim } = await import("@replit/codemirror-vim");
           baseExtensions.push(vim());
         } catch {
           // vim extension failed to load — continue without it
@@ -152,11 +169,5 @@ export default function NoteEditor({ noteId, content, autoFocus = false }: Edito
     }
   }, [content]);
 
-  return (
-    <div
-      ref={containerRef}
-      className="cm-editor-container"
-      style={{ width: '100%' }}
-    />
-  );
+  return <div ref={containerRef} className="w-full" />;
 }
