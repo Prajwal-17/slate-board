@@ -1,19 +1,9 @@
-export type NoteColor =
-  | "default"
-  | "amber"
-  | "green"
-  | "rose"
-  | "violet"
-  | "sky";
-
 export interface Note {
   id: string;
   content: string;
   x: number;
   y: number;
   width: number;
-  color: NoteColor;
-  pinned: boolean;
   createdAt: number;
   updatedAt: number;
 }

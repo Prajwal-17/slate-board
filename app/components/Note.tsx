@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useCallback, useEffect } from "react";
-import { Pin, Pencil, Copy, PinOff, Trash2, Palette } from "lucide-react";
+import { useRef, useCallback, useEffect, useState } from "react";
+import { Pencil, Copy, Trash2, ChevronDown } from "lucide-react";
 import { useStore } from "@/lib/store";
 import type { Note as NoteType, CanvasViewport } from "@/lib/types";
-import { NOTE_COLORS, formatRelativeTime } from "@/lib/utils";
+import { formatRelativeTime } from "@/lib/utils";
 import NotePreview from "./NotePreview";
 import NoteEditDialog from "./NoteEditDialog";
 import {
@@ -39,8 +39,6 @@ export default function Note({
     stopEditing,
     deleteNote,
     updateNotePosition,
-    updateNoteColor,
-    toggleNotePin,
     duplicateNote,
   } = useStore();
 
@@ -52,8 +50,25 @@ export default function Note({
     noteY: number;
   } | null>(null);
   const hasDragged = useRef(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
 
-  const colors = NOTE_COLORS[note.color];
+  // Detect overflow to show "more" indicator
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    const checkOverflow = () => {
+      setIsOverflowing(el.scrollHeight > el.clientHeight);
+    };
+
+    checkOverflow();
+
+    const observer = new ResizeObserver(checkOverflow);
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [note.content, isEditing]);
 
   const handlePointerDown = useCallback(
     (e: React.PointerEvent) => {
@@ -153,8 +168,8 @@ export default function Note({
             "transition-shadow duration-[80ms] transition-colors",
             "will-change-transform touch-none",
             "hover:shadow-note-hover",
-            colors.bg,
-            isEditing ? "border-brand opacity-85" : colors.border,
+            "bg-note-bg",
+            isEditing ? "border-brand opacity-85" : "border-note-border",
             isNew ? "animate-[note-spawn_120ms_ease-out]" : "",
             isEditing
               ? "shadow-note-editing"
@@ -166,7 +181,7 @@ export default function Note({
             left: note.x,
             top: note.y,
             width: note.width,
-            zIndex: isEditing ? 100 : isSelected ? 50 : note.pinned ? 10 : 1,
+            zIndex: isEditing ? 100 : isSelected ? 50 : 1,
             cursor: hasDragged.current ? "grabbing" : "grab",
           }}
           onPointerDown={handlePointerDown}
@@ -178,53 +193,74 @@ export default function Note({
           role="article"
           aria-label={`Note: ${note.content.slice(0, 40) || "empty"}`}
         >
-            {note.pinned && (
+          <div className="flex-1 px-3.5 pt-3 pb-2 min-h-[60px]">
+            {isEditing ? (
               <div
-                className="absolute -top-1.5 right-2.5 text-brand leading-none"
-                title="Pinned"
+                ref={contentRef}
+                className="font-mono text-[13.5px] leading-[1.6] text-text-muted break-words overflow-hidden max-h-[400px] whitespace-pre-wrap opacity-60"
+                style={
+                  isOverflowing
+                    ? {
+                        maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                        WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                      }
+                    : undefined
+                }
               >
-                <Pin size={12} fill="currentColor" />
+                {note.content || (
+                  <span className="font-mono text-xs text-text-placeholder italic">
+                    empty note — double-click to edit
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div
+                ref={contentRef}
+                className="font-mono text-[13.5px] leading-[1.6] text-text-primary break-words overflow-hidden max-h-[400px] whitespace-pre-wrap"
+                style={
+                  isOverflowing
+                    ? {
+                        maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                        WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                      }
+                    : undefined
+                }
+              >
+                {note.content ? (
+                  <NotePreview content={note.content} />
+                ) : (
+                  <span className="font-mono text-xs text-text-placeholder italic">
+                    empty note — double-click to edit
+                  </span>
+                )}
               </div>
             )}
+          </div>
 
-            <div className="flex-1 px-3.5 pt-3 pb-2 min-h-[60px]">
-              {isEditing ? (
-                <div className="font-mono text-[13.5px] leading-[1.6] text-text-muted break-words overflow-hidden max-h-[400px] overflow-y-auto whitespace-pre-wrap opacity-60">
-                  {note.content || (
-                    <span className="font-mono text-xs text-text-placeholder italic">
-                      empty note — double-click to edit
-                    </span>
-                  )}
-                </div>
-              ) : (
-                <div className="font-mono text-[13.5px] leading-[1.6] text-text-primary break-words overflow-hidden max-h-[400px] overflow-y-auto whitespace-pre-wrap">
-                  {note.content ? (
-                    <NotePreview content={note.content} />
-                  ) : (
-                    <span className="font-mono text-xs text-text-placeholder italic">
-                      empty note — double-click to edit
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center justify-between px-3.5 pb-2 gap-2">
+          <div className="flex items-center justify-between px-3.5 pb-2 gap-2">
+            <div className="flex items-center gap-2">
               <span className="font-mono text-[11px] text-text-placeholder tracking-[0.02em]">
                 {formatRelativeTime(note.updatedAt)}
               </span>
-              {isEditing && (
-                <button
-                  className="font-mono text-[11px] text-brand bg-none border-none cursor-pointer px-1 py-0.5 rounded hover:opacity-100 opacity-80"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    stopEditing();
-                  }}
-                >
-                  ✕ close
-                </button>
+              {isOverflowing && (
+                <div className="flex items-center gap-0.5 text-[10px] text-brand/80 font-mono font-medium tracking-[0.05em] uppercase px-1.5 py-0.5 bg-brand/10 rounded-sm">
+                  <span>more</span>
+                  <ChevronDown size={12} strokeWidth={2.5} />
+                </div>
               )}
             </div>
+            {isEditing && (
+              <button
+                className="font-mono text-[11px] text-brand bg-none border-none cursor-pointer px-1 py-0.5 rounded hover:opacity-100 opacity-80"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  stopEditing();
+                }}
+              >
+                ✕ close
+              </button>
+            )}
+          </div>
         </ContextMenuTrigger>
         <ContextMenuContent className="w-48">
           <ContextMenuItem onClick={() => startEditing(note.id)}>
@@ -235,45 +271,6 @@ export default function Note({
             <Copy size={14} className="mr-2" />
             Duplicate
           </ContextMenuItem>
-          <ContextMenuItem onClick={() => toggleNotePin(note.id)}>
-            {note.pinned ? (
-              <PinOff size={14} className="mr-2" />
-            ) : (
-              <Pin size={14} className="mr-2" />
-            )}
-            {note.pinned ? "Unpin" : "Pin to top"}
-          </ContextMenuItem>
-          <ContextMenuSub>
-            <ContextMenuSubTrigger>
-              <Palette size={14} className="mr-2" />
-              Color
-            </ContextMenuSubTrigger>
-            <ContextMenuSubContent className="w-40">
-              {(Object.keys(NOTE_COLORS) as Array<keyof typeof NOTE_COLORS>).map(
-                (color) => (
-                  <ContextMenuItem
-                    key={color}
-                    onClick={() => updateNoteColor(note.id, color)}
-                  >
-                    <span
-                      className="w-4 h-4 rounded-full border-2 mr-2 shrink-0"
-                      style={{
-                        background:
-                          color === "default"
-                            ? "var(--note-bg)"
-                            : `var(--note-${color}-bg)`,
-                        borderColor:
-                          color === "default"
-                            ? "var(--note-border)"
-                            : `var(--note-${color}-border)`,
-                      }}
-                    />
-                    {NOTE_COLORS[color].label}
-                  </ContextMenuItem>
-                ),
-              )}
-            </ContextMenuSubContent>
-          </ContextMenuSub>
           <ContextMenuSeparator />
           <ContextMenuItem
             variant="destructive"

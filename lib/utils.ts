@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { nanoid } from "nanoid";
-import type { Note, NoteColor } from "./types";
+import type { Note } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -55,8 +55,6 @@ export function createNewNote(
     x: canvasX,
     y: canvasY,
     width: 320,
-    color: "default",
-    pinned: false,
     createdAt: now,
     updatedAt: now,
   };
@@ -65,34 +63,6 @@ export function createNewNote(
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
-
-export const NOTE_COLORS: Record<
-  NoteColor,
-  { bg: string; border: string; label: string }
-> = {
-  default: { bg: "bg-note-bg", border: "border-note-border", label: "Slate" },
-  amber: {
-    bg: "bg-note-amber-bg",
-    border: "border-note-amber-border",
-    label: "Amber",
-  },
-  green: {
-    bg: "bg-note-green-bg",
-    border: "border-note-green-border",
-    label: "Green",
-  },
-  rose: {
-    bg: "bg-note-rose-bg",
-    border: "border-note-rose-border",
-    label: "Rose",
-  },
-  violet: {
-    bg: "bg-note-violet-bg",
-    border: "border-note-violet-border",
-    label: "Violet",
-  },
-  sky: { bg: "bg-note-sky-bg", border: "border-note-sky-border", label: "Sky" },
-};
 
 export function formatRelativeTime(timestamp: number): string {
   const diff = Date.now() - timestamp;

@@ -140,9 +140,7 @@ export default function CommandPalette() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-2.5 px-4 py-3.5 border-b border-search-border">
-          <span className="font-mono text-sm text-brand font-medium">
-            &gt;
-          </span>
+          <span className="font-mono text-sm text-brand font-medium">&gt;</span>
           <input
             ref={inputRef}
             id="command-palette-input"

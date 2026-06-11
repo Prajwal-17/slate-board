@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import type { Note, NoteColor, CanvasViewport } from "./types";
+import type { Note, CanvasViewport } from "./types";
 import {
   getAllNotes,
   createNote as dbCreateNote,
@@ -51,8 +51,6 @@ interface StoreState extends UIState, CanvasState {
   updateNoteContent: (id: string, content: string) => void;
   updateNotePosition: (id: string, x: number, y: number) => void;
   deleteNote: (id: string) => Promise<void>;
-  updateNoteColor: (id: string, color: NoteColor) => Promise<void>;
-  toggleNotePin: (id: string) => Promise<void>;
   duplicateNote: (id: string) => Promise<void>;
 
   // Selection & editing
@@ -160,28 +158,10 @@ export const useStore = create<StoreState>((set, get) => ({
     }));
   },
 
-  updateNoteColor: async (id, color) => {
-    await dbUpdateNote(id, { color });
-    set((state) => ({
-      notes: state.notes.map((n) => (n.id === id ? { ...n, color } : n)),
-    }));
-  },
-
-  toggleNotePin: async (id) => {
-    const note = get().notes.find((n) => n.id === id);
-    if (!note) return;
-    const pinned = !note.pinned;
-    await dbUpdateNote(id, { pinned });
-    set((state) => ({
-      notes: state.notes.map((n) => (n.id === id ? { ...n, pinned } : n)),
-    }));
-  },
-
   duplicateNote: async (id) => {
     const note = get().notes.find((n) => n.id === id);
     if (!note) return;
     const duplicate = createNewNote(note.x + 32, note.y + 32, note.content);
-    duplicate.color = note.color;
     await dbCreateNote(duplicate);
     set((state) => ({ notes: [...state.notes, duplicate] }));
   },

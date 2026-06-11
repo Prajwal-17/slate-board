@@ -39,7 +39,9 @@ export default function Toolbar() {
           >
             <Search size={15} strokeWidth={1.6} />
           </TooltipTrigger>
-          <TooltipContent side="top">Search notes <kbd className="ml-1 text-[10px] opacity-60">⌘F</kbd></TooltipContent>
+          <TooltipContent side="top">
+            Search notes <kbd className="ml-1 text-[10px] opacity-60">⌘F</kbd>
+          </TooltipContent>
         </Tooltip>
 
         <Tooltip>
@@ -50,7 +52,9 @@ export default function Toolbar() {
           >
             <Plus size={15} strokeWidth={1.8} />
           </TooltipTrigger>
-          <TooltipContent side="top">New note <kbd className="ml-1 text-[10px] opacity-60">⌘N</kbd></TooltipContent>
+          <TooltipContent side="top">
+            New note <kbd className="ml-1 text-[10px] opacity-60">⌘N</kbd>
+          </TooltipContent>
         </Tooltip>
 
         <div className="w-px h-5 bg-toolbar-border mx-0.5" />
@@ -74,10 +78,10 @@ export default function Toolbar() {
 
         <Tooltip>
           <TooltipTrigger
-            className={`flex items-center justify-center h-[34px] rounded-md border-none bg-transparent cursor-pointer font-mono text-[10px] font-semibold tracking-[0.08em] px-2 transition-colors duration-[80ms] ${
+            className={`flex items-center justify-center h-[34px] rounded-md border-none cursor-pointer font-mono text-[10px] font-bold tracking-[0.08em] px-3 transition-all duration-[80ms] ${
               vimMode
-                ? "text-brand bg-brand-light"
-                : "text-text-muted hover:bg-search-result-hover hover:text-text-primary"
+                ? "bg-text-primary text-canvas-bg shadow-sm"
+                : "bg-transparent text-text-muted hover:bg-search-result-hover hover:text-text-primary"
             }`}
             onClick={toggleVimMode}
             aria-label="Toggle Vim mode"
@@ -154,7 +158,7 @@ const SHORTCUTS = [
   { key: "Enter (selected)", action: "Edit note" },
   { key: "Escape", action: "Exit edit / deselect" },
   { key: "Delete (selected)", action: "Delete note" },
-  { key: "Right-click note", action: "Color & options menu" },
+  { key: "Right-click note", action: "Options menu" },
   { key: "Scroll", action: "Pan canvas" },
   { key: "Ctrl + Scroll", action: "Zoom canvas" },
   { key: "Space + drag", action: "Pan canvas" },
